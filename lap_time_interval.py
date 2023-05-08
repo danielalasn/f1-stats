@@ -5,20 +5,13 @@ from bs4 import BeautifulSoup
 from datetime import datetime
 import matplotlib.pyplot as plt
 
-opcion = 1
-if opcion == 1:
-    #Specific Race results
-    raceNumber = 1
-    year = 2023
-elif opcion == 2:
-    #Last Race results:
-    raceNumber = "last"
-    year = "current"
-else:
-    print("No es una opcion")
+
+#Specific Race
+raceNumber = 4
+year = 2021
 
 #Compare only 2 drivers
-drivers = ['russell','alonso']
+drivers = ['max_verstappen','hamilton']
 
 
 if len(drivers)!=2:
