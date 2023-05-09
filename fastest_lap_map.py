@@ -8,14 +8,13 @@ import requests
 from bs4 import BeautifulSoup
 
 year = 2023
-raceNumber = 1
+raceNumber = 5
 
 circuits_url = f"http://ergast.com/api/f1/{year}/{raceNumber}/circuits"
 circuits_html = requests.get(circuits_url).text
 circuit_soup = BeautifulSoup(circuits_html)
-circuit = circuit_soup.find_all('locality')[0].text
-if circuit == 'Sakhir':
-    circuit = 'Bahrain'
+circuit = circuit_soup.find_all('circuitname')[0].text
+
 
 finishStats_url = f"http://ergast.com/api/f1/{year}/{raceNumber}/results"
 finishStats_html = requests.get(finishStats_url).text
@@ -41,7 +40,7 @@ color = lap.telemetry['Speed']
 points = np.array([x, y]).T.reshape(-1, 1, 2)
 segments = np.concatenate([points[:-1], points[1:]], axis=1)
 
-fastestTime = str(lap.LapTime)[10:18]
+fastestTime = str(lap.LapTime)[10:19]
 
 fig, ax = plt.subplots(sharex=True, sharey=True, figsize=(12, 6.75))
 fig.suptitle(f'{circuit} Fastest Lap Speed - {driver} ({fastestTime})', size=24, y=0.97)
@@ -64,5 +63,8 @@ cbaxes = fig.add_axes([0.25, 0.05, 0.5, 0.05])
 normlegend = mpl.colors.Normalize(vmin=color.min(), vmax=color.max())
 legend = mpl.colorbar.ColorbarBase(cbaxes, norm=normlegend, cmap=colormap, orientation="horizontal")
 
+# Save the fig to a specific path
+path = '/Users/danielalas/Desktop/Personal/F1/Stats/Miami/fastest_lap_map.png'
+# plt.savefig(path)
 
 plt.show()

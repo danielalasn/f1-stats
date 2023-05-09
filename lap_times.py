@@ -1,13 +1,16 @@
 import requests
-import numpy as np
 import pandas as pd
 from bs4 import BeautifulSoup
 from datetime import datetime
 import matplotlib.pyplot as plt
 import datetime as dt
 
-raceNumber = 4
-drivers = ['perez', 'leclerc']
+from matplotlib.ticker import MultipleLocator
+
+import main
+
+raceNumber = 5
+drivers = ['perez', 'max_verstappen']
 year = 2023
 
 circuit_url = f'http://ergast.com/api/f1/{year}/{raceNumber}/circuits'
@@ -17,7 +20,7 @@ locality = circuit_soup.find_all('locality')[0].text
 if locality == 'Sakhir':
     locality = 'Bahrain'
 
-url_laps = f'http://ergast.com/api/f1/2023/{raceNumber}/laps?limit=1000'
+url_laps = f'http://ergast.com/api/f1/2023/{raceNumber}/laps?limit=2000'
 laps_html = requests.get(url_laps).text
 laps_soup = BeautifulSoup(laps_html)
 
@@ -40,11 +43,9 @@ print(df_times)
 # -------Graph
 fig, lapTimeGraph = plt.subplots(figsize=(10, 5))
 
-
 lapTimeGraph.set_xlim(1, nLaps)
-lapTimeGraph.locator_params(axis='x', nbins=nLaps / 2)
-
-lapTimeGraph.locator_params(axis='y', nbins=15)
+x_major_locator = MultipleLocator(5)
+lapTimeGraph.xaxis.set_major_locator(x_major_locator)
 
 for driver in drivers:
     df_times[driver] = df_times[driver].apply(lambda x: dt.datetime.strptime(x, '%M:%S.%f').time())
@@ -55,7 +56,8 @@ lapTimeGraph.plot(df_times['Lap'], df_times[drivers[1]], label=drivers[1], color
 
 lapTimeGraph.set_xlabel('Lap')
 lapTimeGraph.set_ylabel('Time (Minutes:Seconds)')
-lapTimeGraph.set_title(f'Best Red Bull vs Best Ferrari {locality} Lap Times')
+lapTimeGraph.set_title(f'{main.driversId2023[drivers[0]]} vs {main.driversId2023[drivers[1]]} Lap Times - {locality}')
+
 
 def format_time(x, pos):
     d = dt.datetime(1, 1, 1) + dt.timedelta(seconds=x * 60)
@@ -64,8 +66,11 @@ def format_time(x, pos):
 
 lapTimeGraph.yaxis.set_major_formatter(plt.FuncFormatter(format_time))
 
-lapTimeGraph.legend(fontsize="15", loc="upper right")
-
+lapTimeGraph.legend(fontsize="15", loc="upper left")
 lapTimeGraph.grid()
+
+# Save the fig to a specific path
+path = '/Users/danielalas/Desktop/Personal/F1/Stats/Miami/lap_times.png'
+plt.savefig(path)
 
 plt.show()

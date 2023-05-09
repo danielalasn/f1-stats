@@ -3,15 +3,16 @@ import pandas as pd
 from bs4 import BeautifulSoup
 import matplotlib.pyplot as plt
 
+import main
+
 year = 2023
-raceNumber = 4
+raceNumber = 5
 
 circuits_url = f"http://ergast.com/api/f1/{year}/{raceNumber}/circuits"
 circuits_html = requests.get(circuits_url).text
 circuit_soup = BeautifulSoup(circuits_html)
-circuit = circuit_soup.find_all('locality')[0].text
-if circuit == 'Sakhir':
-    circuit = 'Bahrain'
+circuit = circuit_soup.find_all('circuitname')[0].text
+print(circuit)
 
 drivers_url = f"http://ergast.com/api/f1/{year}/{raceNumber}/driverStandings"
 drivers_html = requests.get(drivers_url).text
@@ -41,16 +42,7 @@ constructors = points_df['constructor'].unique()
 
 fig, axes = plt.subplots(2, len(constructors) // 2, figsize=(15, 10))
 
-constructor_color2023 = {'Red Bull': ['white', '#15185F'],
-                         'Aston Martin': ['white', '#00594F'],
-                         'Mercedes': ['white', '#00A19C'],
-                         'Ferrari': ['white', '#FF0200'],
-                         'McLaren': ['white', '#FE8001'],
-                         'Alpine F1 Team': ['white', '#0C1D2C'],
-                         'Haas F1 Team': ['white', '#E1050B'],
-                         'Alfa Romeo': ['white', '#A50E2D'],
-                         'AlphaTauri': ['white', '#032947'],
-                         'Williams': ['white', '#001B54'], }
+
 
 colors = ['white', 'red']
 
@@ -63,14 +55,20 @@ for i, constructor in enumerate(constructors):
     labels = [f"{row['driver']} ({row['points']})" for _, row in constructor_df.iterrows()]
 
     if year == 2023:
-        ax.pie(constructor_df['points'], labels=labels, autopct='%1.1f%%', colors=constructor_color2023[constructor],
-               wedgeprops={'edgecolor': 'black'})
+        ax.pie(constructor_df['points'], labels=labels, autopct='%1.1f%%', colors=[main.constructorColor2023[constructor],'white'],
+               wedgeprops={'edgecolor': 'black'},
+               textprops={'color': 'black'})
     else:
         ax.pie(constructor_df['points'], labels=labels, autopct='%1.1f%%', colors=colors,
                wedgeprops={'edgecolor': 'black'})
 
     ax.set_title(f'{constructor} ({constructor_points})')
 
-plt.suptitle(f"Constructor Points Distribution - {circuit}")
+plt.suptitle(f"Constructor Points Distribution - {circuit}", size=25)
 plt.tight_layout()
+
+# Save the fig to a specific path
+path = '/Users/danielalas/Desktop/Personal/F1/Stats/Miami/constructor_points_distribution.png'
+# plt.savefig(path)
+
 plt.show()
