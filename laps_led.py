@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 
 import main
 
-year = 2021
+year = 2023
 raceNumber = 5
 
 # Option 1: Specific Race
@@ -89,7 +89,7 @@ if output == 1 or output == 2:
             df = df.sort_values('laps_led', ascending=False)
             print(df)
 
-            if year == 2023 or year == 2022 or year == 2021:
+            if year == 2023:
                 for constructor in df['constructor']:
                     colors.append(main.constructorColor2023[constructor])
             else:
