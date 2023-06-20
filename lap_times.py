@@ -1,31 +1,22 @@
-import requests
 import pandas as pd
-from bs4 import BeautifulSoup
 from datetime import datetime
 import matplotlib.pyplot as plt
 import datetime as dt
 
 from matplotlib.ticker import MultipleLocator
 
+import formulas
 import main
 
-raceNumber = 5
-drivers = ['perez', 'max_verstappen']
+raceNumber = 7
+drivers = ['hamilton', 'russell']
 year = 2023
 
-circuit_url = f'http://ergast.com/api/f1/{year}/{raceNumber}/circuits'
-circuit_html = requests.get(circuit_url).text
-circuit_soup = BeautifulSoup(circuit_html)
-locality = circuit_soup.find_all('locality')[0].text
-if locality == 'Sakhir':
-    locality = 'Bahrain'
+circuit = formulas.circuit_name(year,raceNumber)
 
-url_laps = f'http://ergast.com/api/f1/2023/{raceNumber}/laps?limit=2000'
-laps_html = requests.get(url_laps).text
-laps_soup = BeautifulSoup(laps_html)
+laps_soup = formulas.soup(f'http://ergast.com/api/f1/{year}/{raceNumber}/laps?limit=2000')
 
 df_times = pd.DataFrame(columns=['Lap'])
-
 laps_data = laps_soup.find_all('lap')
 nLaps = len(laps_data)
 
@@ -38,7 +29,6 @@ for i in range(nLaps):
                 time = datetime.strptime(timing['time'], "%M:%S.%f").strftime("%M:%S.%f")
                 df_times.loc[int(lap) - 1, driver] = time
                 df_times.loc[int(lap) - 1, 'Lap'] = lap
-print(df_times)
 
 # -------Graph
 fig, lapTimeGraph = plt.subplots(figsize=(10, 5))
@@ -51,12 +41,17 @@ for driver in drivers:
     df_times[driver] = df_times[driver].apply(lambda x: dt.datetime.strptime(x, '%M:%S.%f').time())
     df_times[driver] = df_times[driver].apply(lambda x: (x.minute * 60 + x.second + x.microsecond / 1000000) / 60)
 
-lapTimeGraph.plot(df_times['Lap'], df_times[drivers[0]], label=drivers[0], color='#1f77b4')
-lapTimeGraph.plot(df_times['Lap'], df_times[drivers[1]], label=drivers[1], color='#d62728')
+color1 = formulas.getDriverColor(drivers[0],year)
+color2 = formulas.getDriverColor(drivers[1],year)
+
+lapTimeGraph.plot(df_times['Lap'], df_times[drivers[0]], label=drivers[0], color=color1, linestyle = 'solid')
+lapTimeGraph.plot(df_times['Lap'], df_times[drivers[1]], label=drivers[1], color=color2,
+                  linestyle='dotted' if color1 == color2 else 'solid')
 
 lapTimeGraph.set_xlabel('Lap')
 lapTimeGraph.set_ylabel('Time (Minutes:Seconds)')
-lapTimeGraph.set_title(f'{main.driversId2023[drivers[0]]} vs {main.driversId2023[drivers[1]]} Lap Times - {locality}')
+lapTimeGraph.set_title(f'{formulas.getLastName(drivers[0])} vs {formulas.getLastName(drivers[1])}\
+ Lap Times - {circuit} {year}')
 
 
 def format_time(x, pos):
@@ -71,6 +66,6 @@ lapTimeGraph.grid()
 
 # Save the fig to a specific path
 path = '/Users/danielalas/Desktop/Personal/F1/Stats/Miami/lap_times.png'
-plt.savefig(path)
+# plt.savefig(path)
 
 plt.show()

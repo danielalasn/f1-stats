@@ -4,21 +4,14 @@ import matplotlib as mpl
 from matplotlib import pyplot as plt
 from matplotlib.collections import LineCollection
 
-import requests
-from bs4 import BeautifulSoup
+import formulas
 
 year = 2023
-raceNumber = 5
+raceNumber = 8
 
-circuits_url = f"http://ergast.com/api/f1/{year}/{raceNumber}/circuits"
-circuits_html = requests.get(circuits_url).text
-circuit_soup = BeautifulSoup(circuits_html)
-circuit = circuit_soup.find_all('circuitname')[0].text
+circuit = formulas.circuit_name(year,raceNumber)
 
-
-finishStats_url = f"http://ergast.com/api/f1/{year}/{raceNumber}/results"
-finishStats_html = requests.get(finishStats_url).text
-finishStats_soup = BeautifulSoup(finishStats_html)
+finishStats_soup = formulas.soup(f"http://ergast.com/api/f1/{year}/{raceNumber}/results")
 results = finishStats_soup.find_all('result')
 
 for result in results:
@@ -64,7 +57,7 @@ normlegend = mpl.colors.Normalize(vmin=color.min(), vmax=color.max())
 legend = mpl.colorbar.ColorbarBase(cbaxes, norm=normlegend, cmap=colormap, orientation="horizontal")
 
 # Save the fig to a specific path
-path = '/Users/danielalas/Desktop/Personal/F1/Stats/Miami/fastest_lap_map.png'
-# plt.savefig(path)
+path = f'/Users/danielalas/Desktop/Personal/F1/Stats/{circuit}/fastest_lap_map.png'
+plt.savefig(path)
 
 plt.show()

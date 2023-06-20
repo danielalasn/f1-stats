@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import main
 
 year = 2023
-raceNumber = 5
+raceNumber = 7
 
 # Option 1: Specific Race
 # Option 2: All races until 'raceNumber'
@@ -13,12 +13,9 @@ option = 2
 
 # Output 1: Drivers
 # Output 2: Constructors
-output = 2
+output = 1
 
-circuit = formulas.circuit_name(year, raceNumber)
-
-
-# Gets the driver leader for each lap in one race
+# Gets the laps led in one race
 def specific_race(year, raceNumber):
     leading_drivers = []
     laps_soup = formulas.soup(f'http://ergast.com/api/f1/{year}/{raceNumber}/laps?limit=2000')
@@ -29,7 +26,7 @@ def specific_race(year, raceNumber):
     return leading_drivers
 
 
-# Gets the driver leader for all the races until the raceNumber
+# Gets the laps led for all the races until the raceNumber
 def all_season(year, last_race):
     leading_drivers = []
     for i in range(last_race):
@@ -39,6 +36,9 @@ def all_season(year, last_race):
             leading_driver = lap.find_all('timing')[0]['driverid']
             leading_drivers.append(leading_driver)
     return leading_drivers
+
+circuit = formulas.circuit_name(year, raceNumber)
+print(circuit)
 
 # Checks that the output is set correctly
 if output == 1 or output == 2:
@@ -66,17 +66,14 @@ if output == 1 or output == 2:
         # Checks the desire output (1: driver, 2: constructor)
         if output == 1:
             # Driver
-            if year == 2023:
-                drivers_names = []
-                for driver in df['driver']:
-                    driver_name = main.driversId2023[driver]
-                    constructor = formulas.getConstructor(driver, year)
-                    colors.append(main.constructorColor2023[constructor])
-                    drivers_names.append(driver_name)
-                bars = plt.bar(drivers_names, df['laps_led'], color=colors)
-            else:
-                colors = ['gray', 'black']
-                bars = plt.bar(df['driver'], df['laps_led'], color=colors)
+            drivers_names = []
+            for driver in df['driver']:
+                driver_name = formulas.getLastName(driver)
+                color = formulas.getDriverColor(driver,year)
+                colors.append(color)
+                drivers_names.append(driver_name)
+            bars = plt.bar(drivers_names, df['laps_led'], color=colors)
+
             print(df)
 
         elif output == 2:
@@ -89,11 +86,9 @@ if output == 1 or output == 2:
             df = df.sort_values('laps_led', ascending=False)
             print(df)
 
-            if year == 2023:
-                for constructor in df['constructor']:
-                    colors.append(main.constructorColor2023[constructor])
-            else:
-                colors = ['gray', 'black']
+            for constructor in df['constructor']:
+                colors.append(formulas.getConstructorColor(constructor,year))
+
             bars = plt.bar(df['constructor'], df['laps_led'], color=colors)
 
         for bar in bars:
@@ -111,7 +106,7 @@ if output == 1 or output == 2:
         plt.title(title)
 
         # Save the fig to a specific path
-        path = f'/Users/danielalas/Desktop/Personal/F1/Stats/Miami/laps_led/{year}.png'
+        path = f'/Users/danielalas/Desktop/Personal/F1/Stats/{circuit}/laps_led.png'
         plt.savefig(path)
 
         plt.show()
