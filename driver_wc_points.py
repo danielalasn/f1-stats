@@ -7,7 +7,7 @@ import formulas
 import main
 
 # --------------Changes:
-raceNumber = 8
+raceNumber = 10
 year = 2023
 cant_drivers = 10
 # ---------------
@@ -64,7 +64,7 @@ plt.gca().yaxis.tick_right()
 plt.grid()
 
 # Save the fig to a specific path
-path = f'/Users/danielalas/Desktop/Personal/F1/Stats/{circuit}/driver_wc_points.png'
+path = f'/Users/danielalas/Desktop/Personal/F1/Stats/{year}/{circuit}/driver_wc_points.png'
 plt.savefig(path)
 
 plt.show()

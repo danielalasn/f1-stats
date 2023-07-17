@@ -5,7 +5,7 @@ import formulas
 import main
 
 year = 2023
-raceNumber = 8
+raceNumber = 10
 
 circuit = formulas.circuit_name(year,raceNumber)
 
@@ -65,7 +65,7 @@ plt.suptitle(f"Constructor Points Distribution after {circuit} GP {year}", size=
 plt.tight_layout()
 
 # Save the fig to a specific path
-path = f'/Users/danielalas/Desktop/Personal/F1/Stats/{circuit}/constructor_points_distribution.png'
+path = f'/Users/danielalas/Desktop/Personal/F1/Stats/{year}/{circuit}/constructor_points_distribution.png'
 plt.savefig(path)
 
 plt.show()

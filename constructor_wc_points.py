@@ -6,7 +6,7 @@ import main
 
 cant_constructors = 5
 
-raceNumber = 8
+raceNumber = 10
 year = 2023
 
 constructorStandings_df = pd.DataFrame(columns = ['Constructor', 'Start'])
@@ -54,7 +54,7 @@ plt.gca().yaxis.tick_right()
 plt.grid()
 
 # Save the fig to a specific path
-path = f'/Users/danielalas/Desktop/Personal/F1/Stats/{circuit}/constructor_wc_points.png'
+path = f'/Users/danielalas/Desktop/Personal/F1/Stats/{year}/{circuit}/constructor_wc_points.png'
 plt.savefig(path)
 
 plt.show()

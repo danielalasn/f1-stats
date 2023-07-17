@@ -7,7 +7,7 @@ from matplotlib.collections import LineCollection
 import formulas
 
 year = 2023
-raceNumber = 8
+raceNumber = 10
 
 circuit = formulas.circuit_name(year,raceNumber)
 
@@ -57,7 +57,7 @@ normlegend = mpl.colors.Normalize(vmin=color.min(), vmax=color.max())
 legend = mpl.colorbar.ColorbarBase(cbaxes, norm=normlegend, cmap=colormap, orientation="horizontal")
 
 # Save the fig to a specific path
-path = f'/Users/danielalas/Desktop/Personal/F1/Stats/{circuit}/fastest_lap_map.png'
+path = f'/Users/danielalas/Desktop/Personal/F1/Stats/{year}/{circuit}/fastest_lap_map.png'
 plt.savefig(path)
 
 plt.show()

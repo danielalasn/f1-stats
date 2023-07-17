@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import main
 
 year = 2023
-raceNumber = 7
+raceNumber = 10
 
 # Option 1: Specific Race
 # Option 2: All races until 'raceNumber'
@@ -106,7 +106,7 @@ if output == 1 or output == 2:
         plt.title(title)
 
         # Save the fig to a specific path
-        path = f'/Users/danielalas/Desktop/Personal/F1/Stats/{circuit}/laps_led.png'
+        path = f'/Users/danielalas/Desktop/Personal/F1/Stats/{year}/{circuit}/laps_led.png'
         plt.savefig(path)
 
         plt.show()
