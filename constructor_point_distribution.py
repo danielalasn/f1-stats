@@ -5,7 +5,7 @@ import formulas
 import main
 
 year = 2023
-raceNumber = 10
+raceNumber = 22
 
 circuit = formulas.circuit_name(year,raceNumber)
 
@@ -51,7 +51,7 @@ for i, constructor in enumerate(constructors):
 
 
     ax.pie(constructor_df['points'], labels=labels, autopct='%1.1f%%',
-           colors=[main.constructorColors[constructor],'white'],
+           colors=[main.constructorColors[constructor],'white', 'gray'],
            wedgeprops={'edgecolor': 'black'},
            textprops={'color': 'black'})
 
@@ -61,7 +61,9 @@ for i, constructor in enumerate(constructors):
 if len(constructors) % 2 != 0:
     axes[-1, -1].axis('off')
 
-plt.suptitle(f"Constructor Points Distribution after {circuit} GP {year}", size=25)
+# plt.suptitle(f"Constructor Points Distribution after {circuit} GP {year}", size=25)
+plt.suptitle(f"Constructor Points Distribution 2023 Season", size=25)
+
 plt.tight_layout()
 
 # Save the fig to a specific path

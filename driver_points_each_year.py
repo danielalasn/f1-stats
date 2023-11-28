@@ -2,10 +2,10 @@ import formulas
 import pandas as pd
 import matplotlib.pyplot as plt
 
-startYear = 2010
-endYear = 2015
-raceNumber = 5
-driver = "hamilton"
+startYear = 2020
+endYear = 2023
+raceNumber = 17
+driver = "norris"
 
 cantYears = endYear - startYear +1
 df_data = []

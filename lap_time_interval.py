@@ -7,11 +7,11 @@ import formulas
 import main
 
 # Specific Race
-raceNumber = 8
+raceNumber = 16
 year = 2023
 
 # Compare only 2 drivers
-drivers = ['max_verstappen', 'alonso']
+drivers = ['norris', 'piastri']
 
 if len(drivers) != 2:
     print("Compare 2 Drivers")
@@ -71,7 +71,7 @@ else:
     plt.grid(True)
 
     # Save the fig to a specific path
-    path = f'/Users/danielalas/Desktop/Personal/F1/Stats/{circuit}/lap_time_interval.png'
+    path = f'/Users/danielalas/Desktop/Personal/F1/Stats/{year}/{circuit}/lap_time_interval.png'
     plt.savefig(path)
 
     plt.show()

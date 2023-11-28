@@ -8,8 +8,9 @@ from matplotlib.ticker import MultipleLocator
 import formulas
 import main
 
-raceNumber = 7
-drivers = ['hamilton', 'russell']
+raceNumber = 21
+
+drivers = ['leclerc', 'perez']
 year = 2023
 
 circuit = formulas.circuit_name(year,raceNumber)
@@ -65,7 +66,7 @@ lapTimeGraph.legend(fontsize="15", loc="upper left")
 lapTimeGraph.grid()
 
 # Save the fig to a specific path
-path = '/Users/danielalas/Desktop/Personal/F1/Stats/Miami/lap_times.png'
+# path = '/Users/danielalas/Desktop/Personal/F1/Stats/Miami/lap_times.png'
 # plt.savefig(path)
 
 plt.show()

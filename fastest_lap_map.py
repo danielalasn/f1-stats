@@ -7,17 +7,21 @@ from matplotlib.collections import LineCollection
 import formulas
 
 year = 2023
-raceNumber = 10
+raceNumber = 21
 
 circuit = formulas.circuit_name(year,raceNumber)
 
 finishStats_soup = formulas.soup(f"http://ergast.com/api/f1/{year}/{raceNumber}/results")
 results = finishStats_soup.find_all('result')
+# print(results[0].find_all('fastestlap')[0]['rank'])
 
 for result in results:
-    rank = result.find_all('fastestlap')[0]['rank']
-    if rank == "1":
-        driver = result.find_all('driver')[0]['code']
+    try:
+        rank = result.find_all('fastestlap')[0]['rank']
+        if rank == "1":
+            driver = result.find_all('driver')[0]['code']
+    except:
+        print("not found")
 
 colormap = mpl.cm.plasma
 

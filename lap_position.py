@@ -5,9 +5,9 @@ from matplotlib.ticker import MultipleLocator
 import formulas
 import main
 
-raceNumber = 8
+raceNumber = 21
 year = 2023
-cant_drivers = 10
+cant_drivers = 5
 
 # define drivers
 drivers = []
@@ -74,7 +74,7 @@ plt.xlabel('Lap')
 plt.ylabel('Position')
 
 plt.title(f'{circuit} {year} | Top {cant_drivers} Drivers Lap Positions')
-plt.legend(ncol=5, fontsize="11", loc="upper center")
+plt.legend(ncol=2,fontsize="13", loc="upper right")
 
 # Define the bins
 plt.xlim(0, nLaps)
@@ -88,7 +88,7 @@ plt.grid()
 plt.gca().yaxis.tick_right()
 
 # Save the fig to a specific path
-path = f'/Users/danielalas/Desktop/Personal/F1/Stats/{circuit}/lap_position.png'
+path = f'/Users/danielalas/Desktop/Personal/F1/Stats/{year}/{circuit}/lap_position.png'
 plt.savefig(path)
 
 plt.show()

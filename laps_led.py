@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import main
 
 year = 2023
-raceNumber = 10
+raceNumber = 22
 
 # Option 1: Specific Race
 # Option 2: All races until 'raceNumber'
@@ -13,7 +13,7 @@ option = 2
 
 # Output 1: Drivers
 # Output 2: Constructors
-output = 1
+output = 2
 
 # Gets the laps led in one race
 def specific_race(year, raceNumber):
@@ -38,7 +38,7 @@ def all_season(year, last_race):
     return leading_drivers
 
 circuit = formulas.circuit_name(year, raceNumber)
-print(circuit)
+# print(circuit)
 
 # Checks that the output is set correctly
 if output == 1 or output == 2:
@@ -54,6 +54,8 @@ if output == 1 or output == 2:
             f'{option} is not a valid option, change to: \nOption 1: Specific Race \nOption 2: All races before \'raceNumber\'')
         leading_drivers = []
 
+    plt.figure(figsize=(12, 8))
+
     # If the option is 1 or 2, the df is created
     if leading_drivers:
         df = pd.DataFrame({'driver': leading_drivers})
@@ -62,7 +64,6 @@ if output == 1 or output == 2:
         df = df.sort_values('laps_led', ascending=False)
 
         colors = []
-
         # Checks the desire output (1: driver, 2: constructor)
         if output == 1:
             # Driver
@@ -99,11 +100,15 @@ if output == 1 or output == 2:
             plt.text(x + width / 2, height, height,
                      ha='center', va='bottom')
 
-        if output == 1: plt.xlabel('Driver')
+        if output == 1: plt.xlabel('')
         else: plt.xlabel('Constructor')
 
         plt.ylabel('Laps Led')
-        plt.title(title)
+
+        # plt.title(title)
+        plt.title("Laps Led 2023 Season (Constructors)")
+
+        # plt.xticks(rotation=270, fontsize=10)
 
         # Save the fig to a specific path
         path = f'/Users/danielalas/Desktop/Personal/F1/Stats/{year}/{circuit}/laps_led.png'
